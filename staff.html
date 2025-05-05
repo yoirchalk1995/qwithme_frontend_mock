@@ -17,6 +17,7 @@
     <h1>staff</h1>
     <button id="signInBtn">Log In</button>
     <button id="nextPatientBtn">Next patient</button>
+    <button id="getWaiting">Get patient list</button>
 
     <label for="staffId">Staff ID</label>
     <input type="number" id="staffId" placeholder="Enter ID" />
@@ -27,6 +28,7 @@
       const signInBtn = document.getElementById("signInBtn");
       const assignedRoom = document.getElementById("peopleWaitingString");
       const staffIdInput = document.getElementById("staffId");
+      const getPatientsBtn = document.getElementById("getWaiting");
 
       const socket = io("https://qwithme.onrender.com");
 
@@ -76,9 +78,15 @@
           });
       });
 
+      getPatientsBtn.addEventListener("click", () => {
+        socket.emit("get_list");
+      });
+
       socket.on("connect", () => {
         console.log(`connected to socket as ${socket.id}`);
       });
+
+      socket.on("get_list", (data) => console.log(data));
 
       socket.on("room_assignment", (data) => {
         assignedRoom.innerText = data;
