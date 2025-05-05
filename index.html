@@ -14,6 +14,7 @@
         <button><a href="./index.html">patients</a></button>
       </div>
     </nav>
+    <h1>patient</h1>
     <button id="signInBtn">Log In</button>
     <h3 id="joinedQueString"></h3>
 
@@ -37,10 +38,13 @@
             staffId: 7,
           }),
         })
-          .then((response) => {
-            if (response.type === "json") {
-              response.json();
+          .then(async (response) => {
+            const data = await response.json();
+            if (!response.ok) {
+              // Server responded with an error status
+              throw new Error(data.message || "Unknown error occurred");
             }
+            return data;
           })
           .then((data) => {
             console.log("Response from server:", data);

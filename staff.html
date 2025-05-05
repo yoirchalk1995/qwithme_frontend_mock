@@ -14,8 +14,9 @@
         <button><a href="./index.html">patients</a></button>
       </div>
     </nav>
-    <button id="signInBtn">Log In</button>
     <h1>staff</h1>
+    <button id="signInBtn">Log In</button>
+    <button id="nextPatientBtn">Next patient</button>
     <h3 id="peopleWaitingString"></h3>
 
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
@@ -37,10 +38,13 @@
             staffId: 3,
           }),
         })
-          .then((response) => {
-            if (response.type === "json") {
-              response.json();
+          .then(async (response) => {
+            const data = await response.json();
+            if (!response.ok) {
+              // Server responded with an error status
+              throw new Error(data.message || "Unknown error occurred");
             }
+            return data;
           })
           .then((data) => {
             console.log("Response from server:", data);
