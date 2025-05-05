@@ -32,8 +32,8 @@
       const socket = io("https://qwithme.onrender.com");
 
       signInBtn.addEventListener("click", () => {
-        const patientId = patientIdInput.value;
-        const staffId = staffIdInput.value;
+        const patientId = parseInt(patientIdInput.value);
+        const staffId = parseInt(staffIdInput.value);
         fetch("https://qwithme.onrender.com/api/signIns", {
           method: "POST",
           headers: {
