@@ -1,38 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <nav style="display: flex; flex-direction: row;">
-        <div><button><a href="./staff.html">staff</a></button></div>
-        <div><button><a href="./index.html">patients</a></button></div>
+  </head>
+  <body>
+    <nav style="display: flex; flex-direction: row">
+      <div>
+        <button><a href="./staff.html">staff</a></button>
+      </div>
+      <div>
+        <button><a href="./index.html">patients</a></button>
+      </div>
     </nav>
     <button id="signInBtn">Log In</button>
     <h1>staff</h1>
+    <h3 id="peopleWaitingString"></h3>
 
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
       const signInBtn = document.getElementById("signInBtn");
-      const joinedQue = document.getElementById('joinedQueString')
+      const assignedRoom = document.getElementById("peopleWaitingString");
 
-      const socket = io("http://localhost:3000");
+      const socket = io("https://qwithme.onrender.com");
 
       signInBtn.addEventListener("click", () => {
-        fetch("http://localhost:3000/api/signIns", {
+        fetch("https://qwithme.onrender.com/api/signIns", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            attempt: 'staff',
+            attempt: "doctor",
             socketId: socket.id,
-            staffId: 7,
+            staffId: 3,
           }),
         })
-          .then((response) => response.json())
+          .then((response) => {
+            if (response.type === "json") {
+              response.json();
+            }
+          })
           .then((data) => {
             console.log("Response from server:", data);
           })
@@ -41,14 +50,13 @@
           });
       });
 
-
       socket.on("connect", () => {
         console.log(`connected to socket as ${socket.id}`);
       });
 
-      socket.on('joined_que', (data)=>{
-        joinedQue.innerText = data
-      })
+      socket.on("room_assignment", (data) => {
+        assignedRoom.innerText = data;
+      });
     </script>
-</body>
+  </body>
 </html>
