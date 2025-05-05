@@ -86,7 +86,7 @@
         console.log(`connected to socket as ${socket.id}`);
       });
 
-      socket.on("get_list", (data) => console.log(data));
+      socket.on("get_patients", (data) => console.log(data));
 
       socket.on("room_assignment", (data) => {
         assignedRoom.innerText = data;
