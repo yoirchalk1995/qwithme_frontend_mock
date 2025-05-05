@@ -15,6 +15,10 @@
       </div>
     </nav>
     <h1>patient</h1>
+    <label for="staffId">Staff ID</label>
+    <input type="number" id="staffId" placeholder="Enter staff ID" />
+    <label for="patientId">Patient ID</label>
+    <input type="number" id="patientId" placeholder="Enter your ID" />
     <button id="signInBtn">Log In</button>
     <h3 id="joinedQueString"></h3>
 
@@ -22,10 +26,14 @@
     <script>
       const signInBtn = document.getElementById("signInBtn");
       const joinedQue = document.getElementById("joinedQueString");
+      const patientIdInput = document.getElementById("patientId");
+      const staffIdInput = document.getElementById("staffId");
 
       const socket = io("https://qwithme.onrender.com");
 
       signInBtn.addEventListener("click", () => {
+        const patientId = patientIdInput.value;
+        const staffId = staffIdInput.value;
         fetch("https://qwithme.onrender.com/api/signIns", {
           method: "POST",
           headers: {
@@ -58,9 +66,7 @@
             console.log("Response from server:", data);
           })
           .catch((error) => {
-            console.error(
-              `Error: Status: ${error.status}. Message: ${error.message}`
-            );
+            console.error("Error:", error);
           });
       });
 
