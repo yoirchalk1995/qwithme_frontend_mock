@@ -39,11 +39,19 @@
           }),
         })
           .then(async (response) => {
-            const data = await response.json();
-            if (!response.ok) {
-              // Server responded with an error status
-              throw new Error(data.message || "Unknown error occurred");
+            const contentType = response.headers.get("content-type");
+
+            let data;
+            if (contentType && contentType.includes("application/json")) {
+              data = await response.json();
+            } else {
+              data = await response.text();
             }
+
+            if (!response.ok) {
+              throw new Error(data.message || data || "Unknown error");
+            }
+
             return data;
           })
           .then((data) => {
